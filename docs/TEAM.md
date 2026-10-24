@@ -4,22 +4,22 @@ Aggiornato al 24 ottobre 2026 · Matteo, Salvatore
 
 ## Stato del progetto
 
-L'app demo di Coach gira in locale: landing, layout SaaS e 7 pagine navigabili anche da telefono. Il codice è sul branch `main` del repository `forbes-vibecoding-hackathon` (primo commit `bd692b3`). Non è ancora online e non è ancora collegata a Supabase: oggi mostra dati demo.
+L'app demo di Coach gira in locale: landing, layout SaaS e 7 pagine navigabili anche da telefono. Il codice è sul branch `main` del repository `forbes-vibecoding-hackathon` (primo commit `bd692b3`). Non è ancora online. I dati arrivano da Supabase, progetto `forbes-vibecoding-hackathon` (ref `ibfgjrizoxbeacvfezmr`).
 
 | Area | Stato | Note |
 | --- | --- | --- |
 | Scaffold Next.js 15 + Tailwind 4 | Fatto | Build, typecheck e lint verdi |
 | Layout con sidebar e header | Fatto | Su telefono la sidebar diventa un menu a scomparsa |
 | Pagine dell'app (Dashboard, Contenuti, Impara, Role play, Report, Team) | Fatto | Dati demo, interazioni simulate |
-| Landing page | Fatto | Header con Piano, Numeri e Social, i quattro numeri del piano, prezzo col pilota |
-| Schema Supabase e dati demo | Pronto, non applicato | File SQL nel repository |
-| Collegamento a Supabase | Bloccato | Il connettore vede solo l'organizzazione Nutrime, non Forbes Vibecoding Hackathon |
+| Landing page | Fatto | Hero con demo, 4 passi, per chi, 3 piani, strategia e numeri di go to market, contenuti social |
+| Schema Supabase e dati demo | Fatto | Tabelle create e popolate sul progetto Forbes |
+| Collegamento a Supabase | Fatto in locale | `.env.local` configurato; su Vercel vanno aggiunte le stesse variabili |
 | Pubblicazione su Vercel | Da fare | Serve il link da incollare nel foglio delle squadre |
-| Piano di go to market (ICP, prezzo, imbuto, CAC, LTV, ROI, budget, canali, Fondimpresa) | Fatto | Pagina `/piano`. Tutti i numeri stanno in `src/lib/gtm.ts`, con la fonte (manuale dei casi) o scritti come ipotesi |
+| Piano di go to market (ICP, prezzo, imbuto, CAC, LTV, ROI, budget, canali, Fondimpresa) | Fatto | Pagina `/piano` con i numeri di `src/lib/gtm-piano.ts` (fonte: manuale dei casi). La landing usa `src/lib/gtm.ts`, dalla strategia definitiva: i due piani vanno allineati |
 | Contenuti social (post e video) | Da fare | Vanno nella pagina `/social` |
 | Visual (logo, avatar, mockup telefono) | Da fare | Dal team design, vedi [`DESIGN_BRIEF.md`](DESIGN_BRIEF.md) |
 
-**Blocco aperto:** per collegare Supabase serve ri-autorizzare il connettore includendo l'organizzazione Forbes, oppure passare URL e anon key del progetto `forbes-vibecoding-hackathon`.
+**Prossimo passo:** pubblicare su Vercel con le variabili `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` (valori in Supabase → Project Settings → API).
 
 ## Come avviare il progetto
 
@@ -31,7 +31,7 @@ Serve Node 20 o superiore: il progetto usa Node 24 (file `.nvmrc`). Su alcuni Ma
 4. Avvia: `npm run dev`, poi apri `http://localhost:3000` (la landing) o `/dashboard` (l'app).
 5. Prima di un push controlla: `npm run build` e `npm run lint`.
 
-Senza il file `.env.local` l'app usa i dati demo di `src/lib/mock.ts`: si può lavorare all'interfaccia anche senza Supabase. Per collegarlo, copia `.env.example` in `.env.local` e inserisci URL e anon key del progetto.
+Per leggere i dati da Supabase copia `.env.example` in `.env.local` e inserisci URL e chiave pubblica (publishable key) del progetto: li trovi in Supabase → Project Settings → API, oppure chiedili a Matteo. Senza `.env.local` l'app usa i dati demo di `src/lib/mock.ts`, che sono identici: si può lavorare all'interfaccia anche senza Supabase.
 
 ## Struttura del codice
 
@@ -55,8 +55,8 @@ Le pagine seguono i 4 passi del prodotto: Carica → Impara → Allenati → Mig
 
 | Pagina | URL | Per chi | Funzioni principali | File |
 | --- | --- | --- | --- | --- |
-| Landing | `/` | Giuria, chi compra | Promessa, 4 passi, per chi, prezzo (pilota 1.900 €, poi 19 €/persona/mese, ipotesi), il piano in quattro numeri | `src/app/page.tsx` |
-| Piano | `/piano` | Giuria | Numeri (CAC, LTV, ROI, metrica guida), ICP, proposta di valore, prezzo, imbuto, budget da 50.000 €, canali, Fondimpresa, calendario | `src/app/piano/page.tsx`, `src/lib/gtm.ts` |
+| Landing | `/` | Giuria, chi compra | Promessa con demo, 4 passi, per chi, 3 piani (25 €/venditore/mese), strategia, numeri di go to market, contenuti social | `src/app/page.tsx` |
+| Piano | `/piano` | Giuria | Numeri (CAC, LTV, ROI, metrica guida), ICP, proposta di valore, prezzo, imbuto, budget da 50.000 €, canali, Fondimpresa, calendario | `src/app/piano/page.tsx`, `src/lib/gtm-piano.ts` |
 | Dashboard | `/dashboard` | HR, manager | 4 KPI, ore di pratica a settimana, competenze, ultimi role play, chi migliora, esporta in Excel | `src/app/(app)/dashboard/page.tsx` |
 | Contenuti | `/contenuti` | HR, esperti | Caricamento documento con elaborazione animata, lista documenti e stato | `src/app/(app)/contenuti/page.tsx` |
 | Impara | `/impara` | Dipendente | Docente AI con capitoli e audio animato, "Interrompi e chiedi" in chat | `src/components/lesson-player.tsx` |
@@ -79,11 +79,7 @@ Lo schema ha 5 tabelle in sola lettura pubblica (RLS attiva, nessun login): per 
 | `scenarios` | Scenari di role play: avatar, area, difficoltà, competenze | — |
 | `sessions` | Role play svolti: voto, punteggi per competenza, riscontro al minuto (JSON) | `scenarios`, `members` |
 
-**Per collegare il progetto `forbes-vibecoding-hackathon`:**
-
-1. Esegui `supabase/migrations/20261024000000_init.sql` nell'editor SQL di Supabase.
-2. Esegui `supabase/seed.sql`.
-3. Metti URL e anon key in `.env.local` (in locale) e nelle variabili d'ambiente di Vercel.
+**Stato:** migration e seed sono già applicati al progetto `forbes-vibecoding-hackathon`. Su un progetto nuovo si eseguono, in ordine, `supabase/migrations/20261024000000_init.sql` e `supabase/seed.sql` nell'editor SQL di Supabase.
 
 **Se cambiate i dati demo:** modificate `src/lib/mock.ts`, poi rigenerate il seed con `npx tsx scripts/gen-seed.ts`. Così app e database restano allineati.
 
@@ -141,6 +137,7 @@ Aggiungete una riga in cima a ogni modifica importante.
 | --- | --- | --- |
 | 24 ott 2026 | Pagina `/piano` col piano di go to market, numeri in `src/lib/gtm.ts`, landing con header comune e prezzo col pilota | Salvatore |
 | 24 ott 2026 | Skill di Claude in `.claude/skills` | Salvatore |
+| 24 ott 2026 | Supabase collegato: tabelle e dati demo sul progetto Forbes, `.env.local` in locale, corretto il seed del campo `feedback` | Matteo |
 | 24 ott 2026 | Documentazione del team spostata in `docs/TEAM.md` | Matteo |
 | 24 ott 2026 | Brief per il team design (`DESIGN_BRIEF.md`) e questa documentazione | Matteo |
 | 24 ott 2026 | Setup Next.js + Supabase, layout SaaS, 7 pagine demo, schema e seed SQL (commit `bd692b3`) | Matteo |

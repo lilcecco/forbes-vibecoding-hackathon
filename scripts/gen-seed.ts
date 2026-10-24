@@ -4,7 +4,8 @@ import * as m from "../src/lib/mock";
 
 const snake = (s: string) => s.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
 const lit = (v: unknown): string => {
-  if (Array.isArray(v)) return `array[${v.map(lit).join(",")}]::text[]`;
+  // Array di stringhe → text[]; array di oggetti (es. feedback) → jsonb
+  if (Array.isArray(v) && v.every((x) => typeof x === "string")) return `array[${v.map(lit).join(",")}]::text[]`;
   if (typeof v === "object" && v !== null) return `'${JSON.stringify(v).replace(/'/g, "''")}'::jsonb`;
   if (typeof v === "number") return String(v);
   return `'${String(v).replace(/'/g, "''")}'`;
