@@ -4,6 +4,31 @@
 
 export const price = { perSeatMonth: 19, currency: "€" };
 
+// I tre piani della landing: il prezzo del Team è quello usato nei conti qui sotto
+export const plans = [
+  {
+    name: "Starter",
+    price: 12 as number | null,
+    for: "Fino a 20 persone",
+    features: ["Lezioni a voce dai vostri documenti", "I 6 scenari di role play pronti", "Il report del coach per ogni sessione"],
+    recommended: false,
+  },
+  {
+    name: "Team",
+    price: price.perSeatMonth as number | null,
+    for: "Da 20 a 500 persone",
+    features: ["Lezioni e role play illimitati", "Scenari ricavati dai vostri documenti", "Dashboard HR con esportazione in Excel", "Note a voce degli esperti interni"],
+    recommended: true,
+  },
+  {
+    name: "Enterprise",
+    price: null as number | null,
+    for: "Oltre 500 persone o più sedi",
+    features: ["Tutto il piano Team", "Scenari scritti con voi sui vostri casi", "Accesso con le credenziali aziendali", "Un referente dedicato"],
+    recommended: false,
+  },
+];
+
 export const icp = {
   who: "Aziende italiane da 50 a 500 dipendenti con una rete di vendita o un customer care",
   buyer: "Direttore HR, responsabile formazione o direttore vendite",
