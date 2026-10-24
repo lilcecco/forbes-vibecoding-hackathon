@@ -13,13 +13,13 @@ L'app demo di Coach gira in locale: landing, layout SaaS e 7 pagine navigabili a
 | Pagine dell'app (Dashboard, Contenuti, Impara, Role play, Report, Team) | Fatto | Dati demo, interazioni simulate |
 | Landing page | Fatto | Hero con demo, 4 passi, per chi, 3 piani, strategia e numeri di go to market, contenuti social |
 | Schema Supabase e dati demo | Fatto | Tabelle create e popolate sul progetto Forbes |
-| Collegamento a Supabase | Fatto in locale | `.env.local` configurato; su Vercel vanno aggiunte le stesse variabili |
-| Pubblicazione su Vercel | Da fare | Serve il link da incollare nel foglio delle squadre |
+| Collegamento a Supabase | Fatto | In locale con `.env.local`, online con le variabili d'ambiente di Netlify |
+| Pubblicazione su Netlify | Fatto | Online su [sucabase.com](https://sucabase.com), branch `design` |
 | Piano di go to market (ICP, prezzo, imbuto, CAC, LTV, ROI, budget, canali, Fondimpresa) | Fatto | Pagina `/piano` con i numeri di `src/lib/gtm-piano.ts` (fonte: manuale dei casi). La landing usa `src/lib/gtm.ts`, dalla strategia definitiva: i due piani vanno allineati |
 | Contenuti social (post e video) | Da fare | Vanno nella pagina `/social` |
 | Visual (logo, avatar, mockup telefono) | Da fare | Dal team design, vedi [`DESIGN_BRIEF.md`](DESIGN_BRIEF.md) |
 
-**Prossimo passo:** pubblicare su Vercel con le variabili `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` (valori in Supabase → Project Settings → API).
+**Online:** il sito è su Netlify ([sucabase.com](https://sucabase.com)). Su Netlify sono impostate `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` (non segnarle come segrete). Dopo una modifica alle variabili serve un nuovo deploy.
 
 ## Come avviare il progetto
 
@@ -89,7 +89,7 @@ Abbiamo due ore e quattro persone: lavoriamo su file diversi e facciamo commit p
 
 | Ruolo | Di cosa si occupa | Dove lavora |
 | --- | --- | --- |
-| Sviluppo | App, collegamento Supabase, pubblicazione su Vercel | `src/`, `supabase/` |
+| Sviluppo | App, collegamento Supabase, pubblicazione su Netlify | `src/`, `supabase/` |
 | Design | Colori, logo, avatar, mockup | `src/app/globals.css`, `public/` |
 | Strategia | ICP, prezzo, imbuto, CAC, LTV, ROI, budget da 50.000 euro, canali | Testi per la landing |
 | Contenuti | Post e video social pronti da pubblicare | Testi e immagini per la landing |
@@ -116,7 +116,7 @@ Allo scadere delle due ore si incolla il link del sito nel foglio delle squadre;
 
 - [x] Landing page del prodotto, vibecodata
 - [x] Demo dell'app che sembra vera e si apre da telefono
-- [ ] Sito online su Vercel, con il link
+- [x] Sito online su Netlify, con il link (sucabase.com)
 - [x] Strategia di go to market digitale e fisica, con le scelte motivate
 - [x] Budget da 50.000 euro diviso voce per voce, con la somma che torna
 - [x] ICP, proposta di valore, prezzo, imbuto con percentuali
