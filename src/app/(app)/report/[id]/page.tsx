@@ -1,85 +1,117 @@
-import { Avatar, Badge, Card, PageHeader, Progress } from "@/components/ui";
-import { getMembers, getScenario, getSession } from "@/lib/data";
-import { ArrowLeft, RotateCcw, ThumbsUp, Wrench } from "lucide-react";
+import { PersonaPortrait } from "@/components/persona";
+import { ReportTimeline } from "@/components/report-timeline";
+import { Avatar, Card, CardTitle, buttonClass, fmt1, formatDate, mmss } from "@/components/ui";
+import { getMembers, getScenario, getScenarios, getSession, getSessions, recommendScenario } from "@/lib/data";
+import clsx from "clsx";
+import { ArrowLeft, Play, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+const verdict = (s: number) => (s >= 4 ? "Pronto per il cliente vero" : s >= 3 ? "Sulla buona strada" : "Da riallenare");
 
 export default async function ReportPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const session = await getSession(id);
   if (!session) notFound();
-  const [scenario, members] = await Promise.all([getScenario(session.scenarioId), getMembers()]);
+  const [scenario, members, scenarios, sessions] = await Promise.all([getScenario(session.scenarioId), getMembers(), getScenarios(), getSessions()]);
   const member = members.find((m) => m.id === session.memberId);
-  const minutes = `${Math.floor(session.durationSec / 60)}:${String(session.durationSec % 60).padStart(2, "0")}`;
+  const scores = Object.entries(session.competencyScores).sort((a, b) => b[1] - a[1]);
+  const weakest = scores[scores.length - 1];
+  const next = recommendScenario(scenarios, weakest?.[0], session.scenarioId);
+  const sameScenario = sessions.filter((s) => s.scenarioId === session.scenarioId);
+  const teamAvg = sameScenario.reduce((s, x) => s + x.score, 0) / sameScenario.length;
+  const firstGood = session.feedback.find((f) => f.kind === "positivo");
+  const ring = 2 * Math.PI * 52;
 
   return (
     <>
-      <Link href="/roleplay" className="mb-3 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground">
+      <Link href="/roleplay" className="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground">
         <ArrowLeft className="size-4" /> Role play
       </Link>
-      <PageHeader
-        title="Il voto del coach"
-        description={`${scenario?.title} · ${minutes} min`}
-        action={
-          <Link
-            href={`/roleplay/${session.scenarioId}`}
-            className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-medium text-brand-foreground hover:bg-brand/90"
-          >
-            <RotateCcw className="size-4" /> Rifai il role play
-          </Link>
-        }
-      />
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <Card className="flex flex-col items-center text-center">
-          {member && (
-            <div className="flex items-center gap-2 self-start">
-              <Avatar name={member.name} />
-              <div className="text-left text-sm">
-                <div className="font-medium">{member.name}</div>
-                <div className="text-xs text-muted">{member.role}</div>
+      <div className="grid items-start gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
+        <div className="space-y-4">
+          <Card>
+            <div className="flex items-center gap-3">
+              {member && <Avatar name={member.name} />}
+              <div className="min-w-0 text-sm">
+                <div className="truncate font-medium">{member?.name}</div>
+                <div className="truncate text-muted">
+                  {scenario?.title} · {formatDate(session.date)} · {mmss(session.durationSec)}
+                </div>
+              </div>
+            </div>
+            <div className="mt-5 flex items-center gap-5">
+              <svg viewBox="0 0 120 120" className="size-28 shrink-0" role="img" aria-label={`Voto ${fmt1(session.score)} su 5`}>
+                <circle cx="60" cy="60" r="52" fill="none" stroke="var(--surface-muted)" strokeWidth="8" />
+                <circle
+                  cx="60"
+                  cy="60"
+                  r="52"
+                  fill="none"
+                  stroke="var(--data)"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  strokeDasharray={`${(session.score / 5) * ring} ${ring}`}
+                  transform="rotate(-90 60 60)"
+                />
+                <text x="60" y="66" textAnchor="middle" fontSize="30" fontWeight="600" fill="var(--foreground)">
+                  {fmt1(session.score)}
+                </text>
+                <text x="60" y="86" textAnchor="middle" fontSize="12" fill="var(--muted)">
+                  su 5
+                </text>
+              </svg>
+              <div>
+                <h2 className="text-xl font-semibold tracking-tight">{verdict(session.score)}</h2>
+                {sameScenario.length > 1 && (
+                  <p className="num mt-1 text-sm text-muted">Media del team in questo scenario: {fmt1(teamAvg)}</p>
+                )}
+              </div>
+            </div>
+            {firstGood && <p className="mt-4 text-[15px] leading-snug">{firstGood.text}</p>}
+          </Card>
+
+          <Card>
+            <CardTitle aside="su 5">Per competenza</CardTitle>
+            <ul className="mt-4 space-y-3.5">
+              {scores.map(([name, value]) => (
+                <li key={name}>
+                  <div className="mb-1 flex justify-between text-sm">
+                    <span>{name}</span>
+                    <span className={clsx("num font-semibold", name === weakest?.[0] && "text-danger")}>{fmt1(value)}</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-surface-muted">
+                    <div className={clsx("h-full rounded-full", name === weakest?.[0] ? "bg-danger" : "bg-soot")} style={{ width: `${(value / 5) * 100}%` }} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Card>
+
+          {next && (
+            <div className="overflow-hidden rounded-[var(--radius-card)] bg-brand">
+              <div className="grid grid-cols-[96px_minmax(0,1fr)]">
+                <PersonaPortrait scenarioId={next.id} className="h-full w-full" />
+                <div className="p-4">
+                  <div className="text-sm">Prossimo allenamento</div>
+                  <h2 className="mt-0.5 text-lg font-semibold leading-tight">{next.title}</h2>
+                  <p className="mt-1 text-sm">Allena {weakest?.[0].toLowerCase()}, il tuo punto più debole qui.</p>
+                </div>
+              </div>
+              <div className="flex gap-2 border-t border-soot/10 p-3">
+                <Link href={`/roleplay/${next.id}`} className={clsx(buttonClass("primary"), "flex-1")}>
+                  <Play className="size-4 fill-current" /> Inizia
+                </Link>
+                <Link href={`/roleplay/${session.scenarioId}`} className={clsx(buttonClass("secondary"), "flex-1 border-soot/20 bg-transparent hover:bg-white/40")}>
+                  <RotateCcw className="size-4" /> Rifai il role play
+                </Link>
               </div>
             </div>
           )}
-          <div className="mt-6 text-6xl font-semibold tracking-tight text-brand">{session.score.toFixed(1)}</div>
-          <div className="text-sm text-muted">su 5</div>
-          <ul className="mt-6 w-full space-y-3 text-left">
-            {Object.entries(session.competencyScores).map(([name, value]) => (
-              <li key={name}>
-                <div className="mb-1 flex justify-between text-sm">
-                  <span>{name}</span>
-                  <span className="font-medium">{value.toFixed(1)}</span>
-                </div>
-                <Progress value={(value / 5) * 100} />
-              </li>
-            ))}
-          </ul>
-        </Card>
+        </div>
 
-        <Card className="lg:col-span-2">
-          <h3 className="font-semibold">Riscontro momento per momento</h3>
-          <p className="text-sm text-muted">Ogni commento è legato al punto esatto della conversazione.</p>
-          <ol className="relative mt-5 space-y-5 border-l border-border pl-6">
-            {session.feedback.map((f, i) => (
-              <li key={i} className="relative">
-                <span
-                  className={`absolute -left-[33px] grid size-5 place-items-center rounded-full ${f.kind === "positivo" ? "bg-success" : "bg-warning"} text-white`}
-                >
-                  {f.kind === "positivo" ? <ThumbsUp className="size-3" /> : <Wrench className="size-3" />}
-                </span>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs text-muted">{f.at}</span>
-                  <Badge tone={f.kind === "positivo" ? "success" : "warning"}>{f.competency}</Badge>
-                </div>
-                <p className="mt-1 text-sm">{f.text}</p>
-              </li>
-            ))}
-          </ol>
-          <div className="mt-6 rounded-lg bg-brand-soft p-4 text-sm">
-            <span className="font-semibold text-brand">Prossimo allenamento: </span>
-            il coach ti propone «La chiamata per trattenere il cliente» per lavorare su Generare opzioni.
-          </div>
-        </Card>
+        <ReportTimeline feedback={session.feedback} durationSec={session.durationSec} personaName={scenario?.persona ?? ""} />
       </div>
     </>
   );
