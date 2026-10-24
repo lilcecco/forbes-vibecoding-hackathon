@@ -4,7 +4,7 @@ Aggiornato al 24 ottobre 2026 · Matteo
 
 ## Stato del progetto
 
-L'app demo di Coach gira in locale: landing, layout SaaS e 7 pagine navigabili anche da telefono. Il codice è sul branch `main` del repository `forbes-vibecoding-hackathon` (primo commit `bd692b3`). Non è ancora online e non è ancora collegata a Supabase: oggi mostra dati demo.
+L'app demo di Coach gira in locale: landing, layout SaaS e 7 pagine navigabili anche da telefono. Il codice è sul branch `main` del repository `forbes-vibecoding-hackathon` (primo commit `bd692b3`). Non è ancora online. I dati arrivano da Supabase, progetto `forbes-vibecoding-hackathon` (ref `ibfgjrizoxbeacvfezmr`).
 
 | Area | Stato | Note |
 | --- | --- | --- |
@@ -12,13 +12,13 @@ L'app demo di Coach gira in locale: landing, layout SaaS e 7 pagine navigabili a
 | Layout con sidebar e header | Fatto | Su telefono la sidebar diventa un menu a scomparsa |
 | Pagine dell'app (Dashboard, Contenuti, Impara, Role play, Report, Team) | Fatto | Dati demo, interazioni simulate |
 | Landing page | Fatto in parte | Mancano le sezioni di strategia e numeri |
-| Schema Supabase e dati demo | Pronto, non applicato | File SQL nel repository |
-| Collegamento a Supabase | Bloccato | Il connettore vede solo l'organizzazione Nutrime, non Forbes Vibecoding Hackathon |
+| Schema Supabase e dati demo | Fatto | Tabelle create e popolate sul progetto Forbes |
+| Collegamento a Supabase | Fatto in locale | `.env.local` configurato; su Vercel vanno aggiunte le stesse variabili |
 | Pubblicazione su Vercel | Da fare | Serve il link da incollare nel foglio delle squadre |
 | Contenuti GTM (strategia, budget, ICP, CAC, LTV, ROI, canali, social) | Da fare | Li scrive il team strategia; vanno nella landing |
 | Visual (logo, avatar, mockup telefono) | Da fare | Dal team design, vedi [`DESIGN_BRIEF.md`](../DESIGN_BRIEF.md) |
 
-**Blocco aperto:** per collegare Supabase serve ri-autorizzare il connettore includendo l'organizzazione Forbes, oppure passare URL e anon key del progetto `forbes-vibecoding-hackathon`.
+**Prossimo passo:** pubblicare su Vercel con le variabili `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` (valori in Supabase → Project Settings → API).
 
 ## Come avviare il progetto
 
@@ -30,7 +30,7 @@ Serve Node 20 o superiore: il progetto usa Node 24 (file `.nvmrc`). Su alcuni Ma
 4. Avvia: `npm run dev`, poi apri `http://localhost:3000` (la landing) o `/dashboard` (l'app).
 5. Prima di un push controlla: `npm run build` e `npm run lint`.
 
-Senza il file `.env.local` l'app usa i dati demo di `src/lib/mock.ts`: si può lavorare all'interfaccia anche senza Supabase. Per collegarlo, copia `.env.example` in `.env.local` e inserisci URL e anon key del progetto.
+Per leggere i dati da Supabase copia `.env.example` in `.env.local` e inserisci URL e chiave pubblica (publishable key) del progetto: li trovi in Supabase → Project Settings → API, oppure chiedili a Matteo. Senza `.env.local` l'app usa i dati demo di `src/lib/mock.ts`, che sono identici: si può lavorare all'interfaccia anche senza Supabase.
 
 ## Struttura del codice
 
@@ -77,11 +77,7 @@ Lo schema ha 5 tabelle in sola lettura pubblica (RLS attiva, nessun login): per 
 | `scenarios` | Scenari di role play: avatar, area, difficoltà, competenze | — |
 | `sessions` | Role play svolti: voto, punteggi per competenza, riscontro al minuto (JSON) | `scenarios`, `members` |
 
-**Per collegare il progetto `forbes-vibecoding-hackathon`:**
-
-1. Esegui `supabase/migrations/20261024000000_init.sql` nell'editor SQL di Supabase.
-2. Esegui `supabase/seed.sql`.
-3. Metti URL e anon key in `.env.local` (in locale) e nelle variabili d'ambiente di Vercel.
+**Stato:** migration e seed sono già applicati al progetto `forbes-vibecoding-hackathon`. Su un progetto nuovo si eseguono, in ordine, `supabase/migrations/20261024000000_init.sql` e `supabase/seed.sql` nell'editor SQL di Supabase.
 
 **Se cambiate i dati demo:** modificate `src/lib/mock.ts`, poi rigenerate il seed con `npx tsx scripts/gen-seed.ts`. Così app e database restano allineati.
 
@@ -137,6 +133,7 @@ Aggiungete una riga in cima a ogni modifica importante.
 
 | Data | Cosa | Chi |
 | --- | --- | --- |
+| 24 ott 2026 | Supabase collegato: tabelle e dati demo sul progetto Forbes, `.env.local` in locale, corretto il seed del campo `feedback` | Matteo |
 | 24 ott 2026 | Documentazione del team spostata in `docs/TEAM.md` | Matteo |
 | 24 ott 2026 | Brief per il team design (`DESIGN_BRIEF.md`) e questa documentazione | Matteo |
 | 24 ott 2026 | Setup Next.js + Supabase, layout SaaS, 7 pagine demo, schema e seed SQL (commit `bd692b3`) | Matteo |
