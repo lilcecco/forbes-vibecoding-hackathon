@@ -1,8 +1,0 @@
-# Non caricare su Vercel: segreti locali, build locali e strumenti del team
-.env*
-!.env.example
-.next
-.next-preview
-.next-build
-.claude
-node_modules
