@@ -145,7 +145,7 @@ export function HeroDemo() {
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <button onClick={() => setPicked(null)} className="h-10 rounded-[var(--radius-control)] border border-control px-4 text-sm font-medium hover:bg-surface-muted">
-                  Prova un'altra risposta
+                  Prova un&apos;altra risposta
                 </button>
                 <Link href={`/roleplay/${demo.id}`} className="inline-flex h-10 items-center rounded-[var(--radius-control)] bg-soot px-4 text-sm font-medium text-white hover:bg-soot-3">
                   Fai il role play intero

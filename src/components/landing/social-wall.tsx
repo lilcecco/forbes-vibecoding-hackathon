@@ -2,30 +2,30 @@ import { Heart, MessageCircle, Play, Repeat2 } from "lucide-react";
 import { CoachMark } from "../logo";
 import { PersonaPortrait } from "../persona";
 
-// Le cinque copertine della campagna: reel, post LinkedIn, carosello, reel, post.
-// Sono costruite con gli stessi scenari della demo, nel formato in cui escono.
+// Le cinque uscite della campagna LinkedIn: 2 video verticali e 3 post, dalla strategia di go to market.
+// Instagram e TikTok sono esclusi apposta: il direttore commerciale non decide lì.
 export function SocialWall() {
   return (
     <ul className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:grid-cols-5 md:overflow-visible md:px-0 md:pb-0">
-      {/* 1 · Reel: il cliente che chiede lo sconto */}
+      {/* Video 1 · Tu cosa rispondi? */}
       <li className="w-[64vw] flex-none snap-start md:w-auto">
         <div className="relative aspect-[9/16] overflow-hidden rounded-[var(--radius-card)] bg-soot text-white">
-          <PersonaPortrait scenarioId="s1" className="absolute inset-0 h-full w-full object-cover" label="Roberto" />
+          <PersonaPortrait scenarioId="s1" className="absolute inset-0 h-full w-full" label="Il cliente AI" />
           <div className="absolute inset-x-0 top-0 flex items-center justify-between p-3 text-xs">
             <span className="num rounded-full bg-soot/80 px-2 py-1">0:30</span>
-            <span className="rounded-full bg-soot/80 px-2 py-1">Reel</span>
+            <span className="rounded-full bg-soot/80 px-2 py-1">Video</span>
           </div>
           <div className="absolute inset-x-0 bottom-0 bg-soot/90 p-4">
-            <p className="text-[22px] font-semibold leading-[1.05] tracking-tight">«Voglio il 15% di sconto.»</p>
-            <p className="mt-2 flex items-center gap-1.5 text-sm text-brand">
+            <p className="text-[15px] leading-snug">«Il vostro concorrente mi fa il 15% in meno. Perché dovrei rinnovare?»</p>
+            <p className="mt-2 flex items-center gap-1.5 text-[17px] font-semibold uppercase tracking-tight text-brand">
               <Play className="size-3.5 fill-current" /> Tu cosa rispondi?
             </p>
           </div>
         </div>
-        <Caption kind="Reel 9:16 · Instagram" text="Tre risposte sullo schermo, il coach dà il voto alla fine." />
+        <Caption kind="Video 1 · verticale 30 s" text="Il venditore risponde, l'avatar insiste, poi il voto. «Allenati sul cliente finto. Vinci con quello vero.»" />
       </li>
 
-      {/* 2 · Post LinkedIn: il voto di Marco */}
+      {/* Post 1 · per il direttore commerciale */}
       <li className="w-[64vw] flex-none snap-start md:w-auto">
         <div className="flex aspect-[9/16] flex-col overflow-hidden rounded-[var(--radius-card)] border border-border bg-white text-soot">
           <div className="flex items-center gap-2 p-3">
@@ -35,15 +35,10 @@ export function SocialWall() {
               <div className="text-xs text-muted">Sponsorizzato</div>
             </div>
           </div>
-          <p className="px-3 text-[13px] leading-snug">Il tuo venditore migliore non regala lo sconto al primo no. Gli altri sì.</p>
-          <div className="m-3 flex flex-1 flex-col justify-between rounded-[var(--radius-control)] bg-brand p-4">
-            <span className="text-xs font-medium">Il report di Marco</span>
-            <div>
-              <div className="num text-[56px] font-semibold leading-none tracking-[-0.04em]">
-                4,2<span className="text-base font-normal tracking-normal">/5</span>
-              </div>
-              <p className="mt-2 text-[13px] leading-snug">Al minuto 03:40 ha scoperto che al cliente interessa la rata.</p>
-            </div>
+          <p className="px-3 text-[13px] leading-snug">Il tuo miglior venditore ha imparato a gestire lo sconto al rinnovo perdendo i primi dieci clienti.</p>
+          <div className="m-3 flex flex-1 flex-col justify-end rounded-[var(--radius-control)] bg-brand p-4">
+            <p className="text-[22px] font-semibold leading-[1.1] tracking-tight">E se avesse potuto sbagliare con un cliente finto?</p>
+            <p className="mt-3 text-[13px]">Demo di 15 minuti →</p>
           </div>
           <div className="num flex items-center gap-4 border-t border-border px-3 py-2.5 text-xs text-muted">
             <span className="flex items-center gap-1"><Heart className="size-3.5" /> 128</span>
@@ -51,60 +46,73 @@ export function SocialWall() {
             <span className="flex items-center gap-1"><Repeat2 className="size-3.5" /> 9</span>
           </div>
         </div>
-        <Caption kind="Post LinkedIn" text="Per direttori HR e vendite: il voto al minuto esatto." />
+        <Caption kind="Post 1 · direttore commerciale" text="L'errore fatto sul cliente vero, e quello fatto sul cliente finto." />
       </li>
 
-      {/* 3 · Carosello: dall'aula alla telefonata */}
+      {/* Post 3 · il dato */}
       <li className="w-[64vw] flex-none snap-start md:w-auto">
-        <div className="relative aspect-[9/16]">
-          <div className="absolute inset-0 translate-x-2 -translate-y-2 rounded-[var(--radius-card)] bg-[#bfe86c]" aria-hidden />
-          <div className="absolute inset-0 flex flex-col rounded-[var(--radius-card)] bg-brand p-4 text-soot">
-            <span className="num text-xs font-medium">1 / 5</span>
-            <p className="mt-auto text-[26px] font-semibold leading-[1.05] tracking-tight">La formazione in aula finisce il venerdì.</p>
-            <p className="mt-3 text-sm">Il cliente chiama il lunedì.</p>
-            <div className="mt-5 flex gap-1.5" aria-hidden>
-              {[0, 1, 2, 3, 4].map((d) => (
-                <span key={d} className={d === 0 ? "h-1.5 w-5 rounded-full bg-soot" : "size-1.5 rounded-full bg-soot/30"} />
-              ))}
+        <div className="flex aspect-[9/16] flex-col rounded-[var(--radius-card)] bg-soot-2 p-4 text-white">
+          <span className="text-xs text-on-soot-muted">Una squadra vendite, una settimana</span>
+          <dl className="mt-auto space-y-4">
+            <div>
+              <dd className="num text-[40px] font-semibold leading-none tracking-tight text-brand">3h 20m</dd>
+              <dt className="mt-1 text-[13px] text-on-soot-muted">di pratica</dt>
             </div>
-          </div>
+            <div>
+              <dd className="num text-[40px] font-semibold leading-none tracking-tight">11</dd>
+              <dt className="mt-1 text-[13px] text-on-soot-muted">role play</dt>
+            </div>
+            <div>
+              <dd className="num text-[40px] font-semibold leading-none tracking-tight">4,2<span className="text-base font-normal">/5</span></dd>
+              <dt className="mt-1 text-[13px] text-on-soot-muted">in «argomentare con i dati»</dt>
+            </div>
+          </dl>
+          <p className="mt-5 text-[13px] leading-snug">In aula non avresti saputo nessuno di questi numeri.</p>
         </div>
-        <Caption kind="Carosello · 5 slide" text="Carica il listino, nasce la lezione, ti alleni, il coach ti corregge." />
+        <Caption kind="Post 3 · il dato" text="Tre numeri di una settimana vera, senza commento." />
       </li>
 
-      {/* 4 · Reel: il cliente arrabbiato, due risposte a confronto */}
-      <li className="w-[64vw] flex-none snap-start md:w-auto">
-        <div className="relative flex aspect-[9/16] flex-col overflow-hidden rounded-[var(--radius-card)] bg-soot-2 text-white">
-          <PersonaPortrait scenarioId="s3" className="h-[48%] w-full object-cover" label="Franco" />
-          <div className="absolute inset-x-0 top-0 flex items-center justify-between p-3 text-xs">
-            <span className="num rounded-full bg-soot/80 px-2 py-1">0:24</span>
-            <span className="rounded-full bg-soot/80 px-2 py-1">Reel</span>
-          </div>
-          <div className="flex flex-1 flex-col gap-2 p-3">
-            <p className="text-[15px] font-semibold leading-tight">«Sono tre settimane che aspetto!»</p>
-            <div className="mt-auto rounded-[var(--radius-control)] bg-soot-3 p-2.5 text-[13px] leading-snug">
-              «Si calmi.» <span className="num float-right font-semibold text-[#ff8a80]">1,6</span>
-            </div>
-            <div className="rounded-[var(--radius-control)] bg-brand p-2.5 text-[13px] leading-snug text-soot">
-              «Ha ragione, sono troppe.» <span className="num float-right font-semibold">4,7</span>
-            </div>
-          </div>
-        </div>
-        <Caption kind="Reel 9:16 · TikTok" text="Stessa frase del cliente, due risposte, due voti." />
-      </li>
-
-      {/* 5 · Post: il numero da citare */}
+      {/* Post 2 · per HR e formazione */}
       <li className="w-[64vw] flex-none snap-start md:w-auto">
         <div className="flex aspect-[9/16] flex-col rounded-[var(--radius-card)] bg-surface-muted p-4 text-soot">
-          <span className="text-xs font-medium">Il consiglio del coach</span>
-          <p className="mt-6 text-[15px] leading-snug text-muted line-through decoration-danger decoration-2">«Il listino è questo, purtroppo.»</p>
-          <p className="mt-3 text-[17px] font-medium leading-snug">
-            <mark className="rounded bg-brand px-1">«Nella sua zona i sinistri sono cresciuti dell&apos;8%.»</mark>
-          </p>
-          <div className="num mt-auto text-[64px] font-semibold leading-none tracking-[-0.04em]">+8%</div>
-          <p className="mt-2 text-[13px] leading-snug">Un numero vale più di uno sconto.</p>
+          <span className="text-xs font-medium">Per HR e formazione</span>
+          <p className="mt-6 text-[15px] leading-snug text-muted">Ogni anno la tua azienda investe nella formazione dei dipendenti.</p>
+          <p className="mt-auto text-[28px] font-semibold leading-[1.05] tracking-tight">Quella formazione, la stai misurando?</p>
+          <div data-ui className="mt-4 space-y-1.5 rounded-[var(--radius-control)] bg-white p-3 text-[12px]">
+            {[["Ore di pratica", 78], ["Role play fatti", 62], ["Progressi", 54]].map(([l, w]) => (
+              <div key={l as string}>
+                <div className="flex justify-between"><span>{l}</span></div>
+                <div className="mt-1 h-1.5 rounded-full bg-surface-muted"><div className="h-full rounded-full bg-data" style={{ width: `${w}%` }} /></div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-[12px]">Scopri come finanziarla con Fondimpresa →</p>
         </div>
-        <Caption kind="Post Instagram e LinkedIn" text="La frase sbagliata, la frase giusta, il dato del listino." />
+        <Caption kind="Post 2 · HR e formazione" text="Ore, role play e progressi per persona e squadra, esportabili in Excel." />
+      </li>
+
+      {/* Video 2 · Aula contro Coach */}
+      <li className="w-[64vw] flex-none snap-start md:w-auto">
+        <div className="relative grid aspect-[9/16] grid-rows-[auto_1fr] overflow-hidden rounded-[var(--radius-card)] bg-soot text-white">
+          <div className="grid grid-cols-2 text-center text-xs font-medium">
+            <span className="bg-soot-3 py-2">Aula</span>
+            <span className="bg-brand py-2 text-soot">Coach</span>
+          </div>
+          <ul className="grid grid-rows-3 text-[13px] leading-snug">
+            {[
+              ["Una volta l'anno.", "Ogni volta che serve."],
+              ["Non sai chi ha capito.", "Lo vedi in tempo reale."],
+              ["La paghi a parte.", "Con Fondimpresa."],
+            ].map(([a, b]) => (
+              <li key={a} className="grid grid-cols-2 border-t border-soot-3">
+                <span className="flex items-center p-2.5 text-on-soot-muted">{a}</span>
+                <span className="flex items-center bg-soot-2 p-2.5 font-medium">{b}</span>
+              </li>
+            ))}
+          </ul>
+          <span className="num absolute bottom-3 right-3 rounded-full bg-soot/80 px-2 py-1 text-xs">0:30</span>
+        </div>
+        <Caption kind="Video 2 · Aula contro Coach" text="Schermo diviso, tre confronti, chiusura «Prenota una demo»." />
       </li>
     </ul>
   );
