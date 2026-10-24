@@ -55,7 +55,7 @@ export function ReportTimeline({ feedback, durationSec, personaName }: { feedbac
             {Array.from({ length: bars }).map((_, i) => {
               const h = 18 + Math.abs(Math.sin(i * 1.7) * 52) + ((i * 13) % 19);
               const passed = (i / bars) * durationSec <= t;
-              return <span key={i} className={clsx("flex-1 rounded-full", passed ? "bg-soot" : "bg-control")} style={{ height: `${Math.min(100, h)}%` }} />;
+              return <span key={i} className={clsx("flex-1 rounded-full", passed ? "bg-soot" : "bg-control")} style={{ height: `${Math.min(100, h).toFixed(2)}%` }} />;
             })}
           </div>
           {feedback.map((f, i) => (
