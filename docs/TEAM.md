@@ -1,6 +1,6 @@
 # Coach — Documentazione del team
 
-Aggiornato al 24 ottobre 2026 · Matteo
+Aggiornato al 24 ottobre 2026 · Matteo, Salvatore
 
 ## Stato del progetto
 
@@ -11,12 +11,13 @@ L'app demo di Coach gira in locale: landing, layout SaaS e 7 pagine navigabili a
 | Scaffold Next.js 15 + Tailwind 4 | Fatto | Build, typecheck e lint verdi |
 | Layout con sidebar e header | Fatto | Su telefono la sidebar diventa un menu a scomparsa |
 | Pagine dell'app (Dashboard, Contenuti, Impara, Role play, Report, Team) | Fatto | Dati demo, interazioni simulate |
-| Landing page | Fatto in parte | Mancano le sezioni di strategia e numeri |
+| Landing page | Fatto | Header con Piano, Numeri e Social, i quattro numeri del piano, prezzo col pilota |
 | Schema Supabase e dati demo | Pronto, non applicato | File SQL nel repository |
 | Collegamento a Supabase | Bloccato | Il connettore vede solo l'organizzazione Nutrime, non Forbes Vibecoding Hackathon |
 | Pubblicazione su Vercel | Da fare | Serve il link da incollare nel foglio delle squadre |
-| Contenuti GTM (strategia, budget, ICP, CAC, LTV, ROI, canali, social) | Da fare | Li scrive il team strategia; vanno nella landing |
-| Visual (logo, avatar, mockup telefono) | Da fare | Dal team design, vedi [`DESIGN_BRIEF.md`](../DESIGN_BRIEF.md) |
+| Piano di go to market (ICP, prezzo, imbuto, CAC, LTV, ROI, budget, canali, Fondimpresa) | Fatto | Pagina `/piano`. Tutti i numeri stanno in `src/lib/gtm.ts`, con la fonte (manuale dei casi) o scritti come ipotesi |
+| Contenuti social (post e video) | Da fare | Vanno nella pagina `/social` |
+| Visual (logo, avatar, mockup telefono) | Da fare | Dal team design, vedi [`DESIGN_BRIEF.md`](DESIGN_BRIEF.md) |
 
 **Blocco aperto:** per collegare Supabase serve ri-autorizzare il connettore includendo l'organizzazione Forbes, oppure passare URL e anon key del progetto `forbes-vibecoding-hackathon`.
 
@@ -54,7 +55,8 @@ Le pagine seguono i 4 passi del prodotto: Carica → Impara → Allenati → Mig
 
 | Pagina | URL | Per chi | Funzioni principali | File |
 | --- | --- | --- | --- | --- |
-| Landing | `/` | Giuria, chi compra | Promessa, 4 passi, per chi, prezzo (ipotesi 19 €/dipendente/mese) | `src/app/page.tsx` |
+| Landing | `/` | Giuria, chi compra | Promessa, 4 passi, per chi, prezzo (pilota 1.900 €, poi 19 €/persona/mese, ipotesi), il piano in quattro numeri | `src/app/page.tsx` |
+| Piano | `/piano` | Giuria | Numeri (CAC, LTV, ROI, metrica guida), ICP, proposta di valore, prezzo, imbuto, budget da 50.000 €, canali, Fondimpresa, calendario | `src/app/piano/page.tsx`, `src/lib/gtm.ts` |
 | Dashboard | `/dashboard` | HR, manager | 4 KPI, ore di pratica a settimana, competenze, ultimi role play, chi migliora, esporta in Excel | `src/app/(app)/dashboard/page.tsx` |
 | Contenuti | `/contenuti` | HR, esperti | Caricamento documento con elaborazione animata, lista documenti e stato | `src/app/(app)/contenuti/page.tsx` |
 | Impara | `/impara` | Dipendente | Docente AI con capitoli e audio animato, "Interrompi e chiedi" in chat | `src/components/lesson-player.tsx` |
@@ -63,7 +65,7 @@ Le pagine seguono i 4 passi del prodotto: Carica → Impara → Allenati → Mig
 | Report | `/report/[id]` | Dipendente, manager | Voto del coach, punteggio per competenza, riscontro al minuto, prossimo allenamento | `src/app/(app)/report/[id]/page.tsx` |
 | Team | `/team` | HR, manager | Tabella dei progressi per persona, esporta in Excel | `src/app/(app)/team/page.tsx` |
 
-Percorso consigliato per la presentazione da 90 secondi: landing → Prova un role play → Termina e ricevi il voto → Dashboard → sezione numeri della landing.
+Percorso consigliato per la presentazione da 90 secondi: landing → Prova un role play → Termina e ricevi il voto → Dashboard → `/piano` (si apre sui numeri).
 
 ## Dati e Supabase
 
@@ -119,13 +121,13 @@ Allo scadere delle due ore si incolla il link del sito nel foglio delle squadre;
 - [x] Landing page del prodotto, vibecodata
 - [x] Demo dell'app che sembra vera e si apre da telefono
 - [ ] Sito online su Vercel, con il link
-- [ ] Strategia di go to market digitale e fisica, con le scelte motivate
-- [ ] Budget da 50.000 euro diviso voce per voce, con la somma che torna
-- [ ] ICP, proposta di valore, prezzo, imbuto con percentuali
-- [ ] CAC, LTV (almeno 3 volte il CAC), ROI iniziale, metrica guida
-- [ ] Canali di vendita: da chi passiamo per arrivare all'azienda (es. Fondimpresa, consulenti della formazione)
+- [x] Strategia di go to market digitale e fisica, con le scelte motivate
+- [x] Budget da 50.000 euro diviso voce per voce, con la somma che torna
+- [x] ICP, proposta di valore, prezzo, imbuto con percentuali
+- [x] CAC, LTV (almeno 3 volte il CAC), ROI iniziale, metrica guida
+- [x] Canali di vendita: da chi passiamo per arrivare all'azienda (es. Fondimpresa, consulenti della formazione)
 - [ ] Post e video social pronti da pubblicare, dentro il sito
-- [ ] Ogni numero senza fonte segnato come ipotesi
+- [x] Ogni numero senza fonte segnato come ipotesi
 - [ ] Prova completa da telefono prima della consegna
 - [ ] Link incollato nel foglio delle squadre
 
@@ -137,6 +139,8 @@ Aggiungete una riga in cima a ogni modifica importante.
 
 | Data | Cosa | Chi |
 | --- | --- | --- |
+| 24 ott 2026 | Pagina `/piano` col piano di go to market, numeri in `src/lib/gtm.ts`, landing con header comune e prezzo col pilota | Salvatore |
+| 24 ott 2026 | Skill di Claude in `.claude/skills` | Salvatore |
 | 24 ott 2026 | Documentazione del team spostata in `docs/TEAM.md` | Matteo |
 | 24 ott 2026 | Brief per il team design (`DESIGN_BRIEF.md`) e questa documentazione | Matteo |
 | 24 ott 2026 | Setup Next.js + Supabase, layout SaaS, 7 pagine demo, schema e seed SQL (commit `bd692b3`) | Matteo |

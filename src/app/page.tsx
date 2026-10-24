@@ -1,4 +1,5 @@
-import { Logo } from "@/components/logo";
+import { SiteFooter, SiteHeader } from "@/components/site-header";
+import { acv, BUDGET_TOTAL, cac, customers, formatEur, formatNum, formatPct, ltv, ltvOverCac, pilotPrice, pricing, roi } from "@/lib/gtm";
 import { ArrowRight, BarChart3, BookOpen, Check, FileUp, MessagesSquare } from "lucide-react";
 import Link from "next/link";
 
@@ -19,12 +20,7 @@ const audiences = [
 export default function LandingPage() {
   return (
     <div className="bg-surface">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6">
-        <Logo />
-        <Link href="/dashboard" className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-brand-foreground hover:bg-brand/90">
-          Prova la demo
-        </Link>
-      </header>
+      <SiteHeader />
 
       <section className="mx-auto max-w-6xl px-4 pb-16 pt-12 text-center md:px-6 md:pt-20">
         <span className="rounded-full bg-brand-soft px-3 py-1 text-xs font-medium text-brand">
@@ -45,6 +41,9 @@ export default function LandingPage() {
             Guarda la dashboard
           </Link>
         </div>
+        <Link href="/piano#numeri" className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-brand">
+          Il piano di go to market in numeri <ArrowRight className="size-3.5" />
+        </Link>
       </section>
 
       <section className="bg-background py-16">
@@ -79,27 +78,69 @@ export default function LandingPage() {
       </section>
 
       <section className="bg-background py-16">
-        <div className="mx-auto max-w-md px-4 text-center">
-          <h2 className="text-3xl font-semibold tracking-tight">Un prezzo semplice</h2>
-          <div className="mt-8 rounded-2xl border border-border bg-surface p-8">
-            <div className="text-5xl font-semibold">19 €</div>
-            <div className="text-sm text-muted">per dipendente al mese · fatturazione annuale</div>
-            <ul className="mt-6 space-y-2 text-left text-sm">
-              {["Lezioni e role play illimitati", "Dashboard per HR e manager", "Esportazione in Excel", "Supporto per la pratica Fondimpresa"].map((f) => (
-                <li key={f} className="flex items-center gap-2"><Check className="size-4 text-success" /> {f}</li>
-              ))}
-            </ul>
-            <Link href="/dashboard" className="mt-6 block rounded-lg bg-brand px-5 py-3 font-medium text-brand-foreground hover:bg-brand/90">
-              Prova gratis per 14 giorni
-            </Link>
-            <p className="mt-3 text-xs text-muted">Prezzo indicativo (ipotesi)</p>
+        <div className="mx-auto max-w-3xl px-4 text-center">
+          <h2 className="text-3xl font-semibold tracking-tight">Un prezzo semplice, e una data</h2>
+          <p className="mt-2 text-muted">Si parte con un pilota che ha una fine. Si paga col conto Fondimpresa, tramite il tuo ente di formazione.</p>
+          <div className="mt-8 grid gap-4 text-left sm:grid-cols-2">
+            <div className="rounded-2xl border border-border bg-surface p-6">
+              <div className="text-sm font-medium text-muted">Pilota</div>
+              <div className="mt-1 text-4xl font-semibold">{formatEur(pilotPrice)}</div>
+              <div className="text-sm text-muted">{pricing.seats} persone · {pricing.pilotWeeks} settimane · una competenza</div>
+              <ul className="mt-5 space-y-2 text-sm">
+                {["Il tuo listino diventa lezioni e role play", "Una data di fine: il giorno del listino nuovo", `${formatEur(pilotPrice / pricing.seats)} a persona, contro ${formatEur(pricing.classroomPerPerson)} di un'aula`].map((f) => (
+                  <li key={f} className="flex items-start gap-2"><Check className="mt-0.5 size-4 shrink-0 text-success" /> {f}</li>
+                ))}
+              </ul>
+              <Link href="/roleplay/s1" className="mt-6 block rounded-lg bg-brand px-5 py-3 text-center font-medium text-brand-foreground hover:bg-brand/90">
+                Prova un role play adesso
+              </Link>
+            </div>
+            <div className="rounded-2xl border border-border bg-surface p-6">
+              <div className="text-sm font-medium text-muted">Poi, l&apos;anno</div>
+              <div className="mt-1 text-4xl font-semibold">{pricing.seatPrice} €</div>
+              <div className="text-sm text-muted">a persona al mese · fatturazione annuale</div>
+              <ul className="mt-5 space-y-2 text-sm">
+                {["Lezioni e role play illimitati", "Dashboard per HR e manager, ogni lunedì", "Esportazione in Excel", "Avviso 30 giorni prima di ogni rinnovo"].map((f) => (
+                  <li key={f} className="flex items-start gap-2"><Check className="mt-0.5 size-4 shrink-0 text-success" /> {f}</li>
+                ))}
+              </ul>
+              <Link href="/dashboard" className="mt-6 block rounded-lg border border-border px-5 py-3 text-center font-medium hover:bg-surface-muted">
+                Guarda la dashboard
+              </Link>
+            </div>
           </div>
+          <p className="mt-3 text-xs text-muted">Prezzi indicativi (ipotesi), nella fascia del manuale dei casi per i piccoli team.</p>
         </div>
       </section>
 
-      <footer className="border-t border-border py-8 text-center text-sm text-muted">
-        Coach · Vibecoding Hackathon Next Leaders × Forbes · 2026
-      </footer>
+      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wider text-brand">Per la giuria</div>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight">Il piano in quattro numeri</h2>
+            <p className="mt-1 text-muted">{customers} aziende in sei mesi con {formatEur(BUDGET_TOTAL)}, passando dagli enti di formazione Fondimpresa.</p>
+          </div>
+          <Link href="/piano" className="inline-flex items-center gap-1 font-medium text-brand">
+            Il piano completo <ArrowRight className="size-4" />
+          </Link>
+        </div>
+        <div className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {[
+            { label: "CAC", value: formatEur(cac), note: "costo per cliente" },
+            { label: "LTV", value: formatEur(ltv), note: `${formatNum(ltvOverCac)} volte il CAC` },
+            { label: "ROI primo anno", value: `+${formatPct(roi)}`, note: "sul margine lordo" },
+            { label: "Contratto annuo", value: formatEur(acv), note: `${pricing.seats} posti a ${pricing.seatPrice} €` },
+          ].map((s) => (
+            <Link key={s.label} href="/piano#numeri" className="rounded-xl border border-border p-4 transition-colors hover:border-brand/40 hover:bg-brand-soft">
+              <div className="text-sm text-muted">{s.label}</div>
+              <div className="mt-1 text-2xl font-semibold tracking-tight md:text-3xl">{s.value}</div>
+              <div className="mt-1 text-xs text-muted">{s.note}</div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <SiteFooter />
     </div>
   );
 }

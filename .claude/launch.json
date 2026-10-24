@@ -6,6 +6,12 @@
       "runtimeExecutable": "/Users/m.ceccarelli/.nvm/versions/node/v24.22.0/bin/node",
       "runtimeArgs": ["node_modules/next/dist/bin/next", "dev"],
       "port": 3000
+    },
+    {
+      "name": "coach-dev-windows",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
     }
   ]
 }
