@@ -100,9 +100,9 @@ export default function LandingPage() {
             Il simulatore di volo per i venditori: carichi listini e procedure, Coach crea lezioni a voce e role play con un cliente AI, poi dà un voto a ogni risposta.
           </p>
           <div className="reveal mt-8 flex flex-wrap items-center gap-3">
-            <a href="#prova" className="inline-flex h-12 items-center gap-2 rounded-[var(--radius-control)] bg-brand px-5 text-base font-medium text-soot transition-transform hover:bg-[#cdf27f] active:scale-95">
+            <Link href="/dashboard" className="inline-flex h-12 items-center gap-2 rounded-[var(--radius-control)] bg-brand px-5 text-base font-medium text-soot transition-transform hover:bg-[#cdf27f] active:scale-95">
               Prova la demo <ArrowRight className="size-4" />
-            </a>
+            </Link>
             <a href="#prezzi" className="inline-flex h-12 items-center rounded-[var(--radius-control)] border border-soot-3 px-5 text-base font-medium hover:bg-soot-2">
               Vedi i prezzi
             </a>
@@ -671,9 +671,9 @@ export default function LandingPage() {
 
       {/* Telefono: la demo resta a un tocco */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-soot-3 bg-soot p-3 md:hidden">
-        <a href="#prova" className="flex h-12 items-center justify-center gap-2 rounded-[var(--radius-control)] bg-brand text-base font-medium text-soot">
+        <Link href="/dashboard" className="flex h-12 items-center justify-center gap-2 rounded-[var(--radius-control)] bg-brand text-base font-medium text-soot">
           Prova la demo <ArrowRight className="size-4" />
-        </a>
+        </Link>
       </div>
     </div>
   );
