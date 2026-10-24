@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { Pause, Play, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
+import { CoachMark } from "./logo";
 
 export type Scene = {
   seconds: number;
@@ -48,13 +49,13 @@ export function VideoReel({ scenes }: { scenes: Scene[] }) {
       type="button"
       onClick={toggle}
       aria-label={playing ? "Metti in pausa il video" : "Guarda il video"}
-      className="relative mx-auto block aspect-[9/16] w-full max-w-[260px] overflow-hidden rounded-3xl bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950 text-left text-white shadow-lg"
+      className="relative mx-auto block aspect-[9/16] w-full max-w-[260px] overflow-hidden rounded-3xl bg-soot text-left text-white shadow-lg"
     >
       <div className="absolute inset-x-3 top-3 z-10 flex gap-1">
         {scenes.map((s, i) => (
           <div key={i} className="h-1 flex-1 overflow-hidden rounded-full bg-white/25">
             <div
-              className="h-full bg-white"
+              className="h-full bg-brand"
               style={{ width: i < index ? "100%" : i === index ? `${Math.min(100, (elapsed / s.seconds) * 100)}%` : "0%" }}
             />
           </div>
@@ -65,7 +66,7 @@ export function VideoReel({ scenes }: { scenes: Scene[] }) {
         {scene.eyebrow && <div className="mb-3 text-xs font-medium uppercase tracking-wider text-white/60">{scene.eyebrow}</div>}
         {scene.kind === "quote" && (
           <>
-            <div className="mb-4 grid size-14 place-items-center rounded-full bg-gradient-to-br from-amber-200 to-orange-300 text-xl font-semibold text-slate-800">
+            <div className="mb-4 grid size-14 place-items-center rounded-full bg-brand text-xl font-semibold text-soot">
               {scene.eyebrow?.charAt(0) ?? "C"}
             </div>
             <p className="text-xl font-semibold leading-snug">{scene.text}</p>
@@ -85,7 +86,7 @@ export function VideoReel({ scenes }: { scenes: Scene[] }) {
         )}
         {scene.kind === "logo" && (
           <div className="text-center">
-            <div className="mx-auto mb-4 grid size-14 place-items-center rounded-2xl bg-brand text-2xl font-bold">C</div>
+            <CoachMark className="mx-auto mb-4 size-14" />
             <p className="text-xl font-semibold leading-snug">{scene.text}</p>
             {scene.sub && <p className="mt-3 text-sm text-white/70">{scene.sub}</p>}
           </div>

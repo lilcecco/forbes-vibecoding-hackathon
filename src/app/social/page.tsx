@@ -1,4 +1,5 @@
 import { CopyButton } from "@/components/copy-button";
+import { CoachMark } from "@/components/logo";
 import { SiteFooter, SiteHeader } from "@/components/site-header";
 import { Badge, Card } from "@/components/ui";
 import { VideoReel } from "@/components/video-reel";
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 function PostHeader() {
   return (
     <div className="flex items-center gap-2">
-      <span className="grid size-10 place-items-center rounded-lg bg-brand text-sm font-bold text-brand-foreground">C</span>
+      <CoachMark className="size-10" />
       <div>
         <div className="text-sm font-semibold">Coach</div>
         <div className="text-xs text-muted">Pagina LinkedIn · Formazione aziendale</div>
@@ -31,7 +32,7 @@ export default function SocialPage() {
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         <div className="pb-6 pt-10 md:pt-16">
           <Badge tone="brand">Contenuti social · pronti da pubblicare</Badge>
-          <h1 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl">Tre post a settimana, su LinkedIn</h1>
+          <h1 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl">Tre post e un video a settimana, su LinkedIn</h1>
           <p className="mt-4 max-w-2xl text-lg text-muted">
             È dove i responsabili del personale e i direttori commerciali leggono di lavoro. Pubblicano la pagina di Coach e i due fondatori;
             gli stessi video girano su YouTube Shorts. Niente Instagram e TikTok: il nostro compratore non sceglie lì la formazione.
@@ -39,7 +40,7 @@ export default function SocialPage() {
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             {plan.map((p) => (
               <Card key={p.day}>
-                <div className="text-xs font-semibold uppercase tracking-wider text-brand">{p.day}</div>
+                <div className="text-xs font-semibold uppercase tracking-wider text-data">{p.day}</div>
                 <div className="mt-1 font-semibold">{p.what}</div>
                 <div className="mt-1 text-sm text-muted">Esempio: {p.example}</div>
               </Card>
@@ -87,8 +88,8 @@ export default function SocialPage() {
                   <Badge>{p.day}</Badge>
                 </div>
                 <div className="mt-4 flex-1 whitespace-pre-line text-sm leading-relaxed">{p.text}</div>
-                <div className="mt-4 rounded-xl bg-gradient-to-br from-brand to-indigo-900 p-6 text-brand-foreground">
-                  <div className="text-4xl font-semibold tracking-tight">{p.visual.big}</div>
+                <div className="mt-4 rounded-xl bg-soot p-6 text-white">
+                  <div className="text-4xl font-semibold tracking-tight text-brand">{p.visual.big}</div>
                   <div className="mt-1 text-sm opacity-80">{p.visual.small}</div>
                 </div>
                 {p.source && <p className="mt-2 text-xs text-muted">Fonte: {p.source}</p>}
@@ -107,7 +108,7 @@ export default function SocialPage() {
             </div>
             {carousel.slides.map((s, i) => (
               <div key={i} className="flex aspect-square w-60 shrink-0 snap-start flex-col justify-between rounded-2xl border border-border bg-background p-5">
-                <span className="text-xs font-semibold text-brand">{i + 1} di {carousel.slides.length}</span>
+                <span className="text-xs font-semibold text-data">{i + 1} di {carousel.slides.length}</span>
                 <p className="text-lg font-semibold leading-snug">{s.quote}</p>
                 <p className="text-sm text-muted">{s.why}</p>
               </div>

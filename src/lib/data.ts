@@ -7,7 +7,7 @@ const toCamel = (s: string) => s.replace(/_([a-z])/g, (_, c: string) => c.toUppe
 
 function camelize<T>(row: Record<string, unknown>): T {
   return Object.fromEntries(
-    Object.entries(row).map(([k, v]) => [toCamel(k), v]),
+    Object.entries(row).map(([k, v]) => [toCamel(k), typeof v === "string" && /^\d+\.\d+$/.test(v) ? Number(v) : v]),
   ) as T;
 }
 
@@ -38,5 +38,35 @@ export async function getSession(id: string) {
   return (await getSessions()).find((s) => s.id === id);
 }
 
+export async function getMember(id: string) {
+  return (await getMembers()).find((m) => m.id === id);
+}
+
 export const COMPETENCIES = mock.COMPETENCIES;
 export const weekly = mock.weekly;
+export const expertNotes = mock.expertNotes;
+
+// Media per competenza calcolata da un insieme di sessioni
+export function competencyAverages(list: Session[]) {
+  return COMPETENCIES.map((name) => {
+    const vals = list.map((s) => s.competencyScores[name]).filter((v): v is number => v !== undefined);
+    return { name, value: vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null, count: vals.length };
+  });
+}
+
+// Andamento del punteggio nelle 6 settimane: l'ultima settimana è la media attuale,
+// la variazione delle ultime 4 settimane è il trend della persona
+export function scoreHistory(m: Member) {
+  return weekly.map((w, i) => ({
+    week: w.week,
+    score: Math.min(5, Math.max(1, Math.round((m.avgScore - (m.trend * (5 - i)) / 4) * 10) / 10)),
+  }));
+}
+
+// Il prossimo scenario consigliato: allena la competenza più debole, ma non è quello appena fatto
+export function recommendScenario(all: Scenario[], weakest: string | undefined, excludeId?: string) {
+  const pool = all.filter((s) => s.id !== excludeId);
+  return pool.find((s) => weakest && s.competencies.includes(weakest)) ?? pool[0];
+}
+
+export const READY_THRESHOLD = 4;

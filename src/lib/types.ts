@@ -50,6 +50,7 @@ export type FeedbackItem = {
   competency: string;
   kind: "positivo" | "migliora";
   text: string;
+  quote?: string; // la frase detta in quel momento
 };
 
 export type Session = {
@@ -61,4 +62,12 @@ export type Session = {
   score: number; // 0-5
   competencyScores: Record<string, number>;
   feedback: FeedbackItem[];
+};
+
+export type ExpertNote = {
+  id: string;
+  author: string;
+  role: string;
+  text: string;
+  date: string;
 };
