@@ -24,3 +24,7 @@ Senza `.env.local` l'app usa i dati demo di `src/lib/mock.ts`. Per collegare Sup
 - `src/app/(app)/*` — pagine dell'app con sidebar e header (`src/components/app-shell.tsx`)
 - `src/lib/data.ts` — accesso ai dati (Supabase o demo)
 - `DESIGN_BRIEF.md` — pagine e funzioni per il team design
+
+## Documentazione del team
+
+Stato del progetto, setup, regole di lavoro e checklist di consegna: [Coach — Documentazione del team](https://claude.ai/artifact/Gx6zKktMX9gRJ9XNKMkFM9). Aggiornate il registro delle modifiche a ogni cambiamento importante.
